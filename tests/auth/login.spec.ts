@@ -1,24 +1,19 @@
-import { test, expect } from '../../fixtures/auth.fixture'
-import { users } from '../../data/users'
-import { ENV } from '../../config/env'
+import { test, expect } from '../../fixtures/base.fixture';
+import { ENV } from '../../config/env';
+import { users } from '../../data/users';
 
-test.describe('Login', () => {
-  test('should login successfully', async ({
-    page,
-    loginPage,
-    dashboardPage,
-  }) => {
-    await page.goto(ENV.BASE_URL)
+test.describe('Login Feature', () => {
 
-    await loginPage.verifyLoginPageDisplayed()
+  test('Admin can login successfully', async ({ page, loginPage }) => {
+
+    await page.goto(ENV.BASE_URL);
 
     await loginPage.login(
       users.admin.username,
       users.admin.password
-    )
+    );
 
-    await dashboardPage.verifyDashboardDisplayed()
+    await loginPage.verifyLoginSuccess();
+  });
 
-    await expect(page).toHaveURL(/dashboard/)
-  })
-})
+});

@@ -1,9 +1,13 @@
-import { Page } from '@playwright/test'
+import { Page } from '@playwright/test';
 
 export class BasePage {
-  constructor(protected page: Page) {}
+  protected page: Page;
 
-  async goto(path: string) {
-    await this.page.goto(path)
+  constructor(page: Page) {
+    this.page = page;
+  }
+
+  async navigate(url: string) {
+    await this.page.goto(url);
   }
 }

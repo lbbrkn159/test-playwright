@@ -1,74 +1,41 @@
-# Playwright OrangeHRM Automation POC
+# OrangeHRM Playwright Automation Framework
 
-Automation Testing POC using Playwright + TypeScript with OrangeHRM demo application.
+Production-ready UI Automation Framework using Playwright + TypeScript for OrangeHRM.
 
 ---
 
 # Tech Stack
 
-- Playwright
-- TypeScript
-- Page Object Model (POM)
-- GitHub Actions
-- HTML Report
-
----
-
-# Demo Application
-
-OrangeHRM Demo:
-
-https://opensource-demo.orangehrmlive.com
+* Playwright
+* TypeScript
+* Page Object Model (POM)
+* Fixtures
+* Environment Configuration
+* GitHub Actions CI
+* HTML Reporting
 
 ---
 
 # Project Structure
 
-```text
-playwright-orangehrm-poc/
+```bash
+orangehrm-playwright/
 │
 ├── tests/
-│   └── auth/
-│       └── login.spec.ts
-│
 ├── pages/
-│   ├── base.page.ts
-│   ├── login.page.ts
-│   └── dashboard.page.ts
-│
 ├── fixtures/
-│   └── auth.fixture.ts
-│
 ├── data/
-│   └── users.ts
-│
 ├── config/
-│   └── env.ts
-│
-├── .github/
-│   └── workflows/
-│       └── playwright.yml
+├── utils/
+├── reports/
+├── .github/workflows/
 │
 ├── playwright.config.ts
-├── package.json
 ├── tsconfig.json
+├── package.json
 ├── .env
 └── README.md
 ```
-
----
-
-# Features
-
-- Login automation
-- Page Object Model (POM)
-- Reusable fixtures
-- Config management
-- HTML reporting
-- Screenshot on failure
-- Video recording
-- Trace viewer
-- GitHub Actions CI/CD
 
 ---
 
@@ -77,8 +44,8 @@ playwright-orangehrm-poc/
 ## Clone Repository
 
 ```bash
-git clone <your-repository-url>
-cd playwright-orangehrm-poc
+git clone <repository-url>
+cd orangehrm-playwright
 ```
 
 ---
@@ -99,27 +66,45 @@ npx playwright install
 
 ---
 
-# Environment Variables
+# Environment Setup
 
-Create `.env`
+Create `.env` file in root directory.
 
 ```env
 BASE_URL=https://opensource-demo.orangehrmlive.com
+USERNAME=Admin
+PASSWORD=admin123
 ```
 
 ---
 
 # Run Tests
 
-## Run all tests
+## Run All Tests
 
 ```bash
-npx playwright test
+npm test
 ```
 
 ---
 
-## Run specific test
+## Run in Headed Mode
+
+```bash
+npm run test:headed
+```
+
+---
+
+## Run Playwright UI Mode
+
+```bash
+npm run test:ui
+```
+
+---
+
+## Run Specific Test
 
 ```bash
 npx playwright test tests/auth/login.spec.ts
@@ -127,136 +112,196 @@ npx playwright test tests/auth/login.spec.ts
 
 ---
 
-## Run headed mode
+# HTML Report
+
+After execution:
 
 ```bash
-npx playwright test --headed
+npm run report
+```
+
+Report location:
+
+```bash
+reports/html-report/index.html
 ```
 
 ---
 
-## Run debug mode
+# Framework Architecture
 
-```bash
-npx playwright test --debug
+## Page Object Model (POM)
+
+Encapsulates UI elements and page actions.
+
+Example:
+
+```ts
+await loginPage.login(username, password);
+```
+
+Benefits:
+
+* Reusable code
+* Better maintainability
+* Cleaner test files
+* Easier scaling
+
+---
+
+# Fixtures
+
+Fixtures provide reusable test setup and dependencies.
+
+Example:
+
+```ts
+test('Login', async ({ loginPage }) => {
+  await loginPage.login('Admin', 'admin123');
+});
 ```
 
 ---
 
-# Reports
+# Environment Configuration
 
-## Open HTML Report
+Environment variables are managed using `.env`.
 
-```bash
-npx playwright show-report
+Example:
+
+```ts
+ENV.BASE_URL
+ENV.USERNAME
+ENV.PASSWORD
 ```
+
+Supports:
+
+* local
+* staging
+* production
 
 ---
 
-# GitHub Actions
+# GitHub Actions CI
 
-CI/CD workflow file:
+Pipeline location:
 
-```text
+```bash
 .github/workflows/playwright.yml
 ```
 
-Workflow automatically runs tests when:
-- push to main branch
-- pull request created
+Triggers:
+
+* push
+* pull_request
+
+Features:
+
+* Install dependencies
+* Install browsers
+* Execute Playwright tests
+* Upload HTML report artifact
 
 ---
 
-# Example Test Flow
-
-## Login Success
-
-- Open login page
-- Enter username
-- Enter password
-- Click login
-- Verify dashboard displayed
-
----
-
-# Example Architecture
-
-```text
-Test
- ↓
-Fixture
- ↓
-Page Object
- ↓
-Playwright
- ↓
-Browser
-```
-
----
-
-# Coding Standards
-
-## Recommended Locators
-
-Use:
+# Example Test
 
 ```ts
-getByRole()
-getByLabel()
-locator('[data-testid=]')
+test('Admin can login successfully', async ({ page, loginPage }) => {
+
+  await page.goto(ENV.BASE_URL);
+
+  await loginPage.login(
+    users.admin.username,
+    users.admin.password
+  );
+
+  await loginPage.verifyLoginSuccess();
+
+});
 ```
 
-Avoid:
+---
 
-```ts
-xpath
-nth-child
-hard wait
-```
+# Available Scripts
+
+| Command             | Description              |
+| ------------------- | ------------------------ |
+| npm test            | Run all tests            |
+| npm run test:headed | Run tests in headed mode |
+| npm run test:ui     | Open Playwright UI       |
+| npm run report      | Open HTML report         |
 
 ---
 
 # Best Practices
 
-- Keep tests independent
-- Avoid hard waits
-- Use reusable page objects
-- Separate test data from test logic
-- Use environment variables for config
-- Keep locators stable
+* Keep assertions inside test files
+* Keep locators inside page objects
+* Use fixtures for shared setup
+* Avoid hardcoded waits
+* Use test data separation
+* Use environment variables
+* Use reusable helper methods
 
 ---
 
-# Useful Commands
+# Recommended Next Enhancements
 
-## Generate selectors/code
+* Storage State Authentication
+* API Testing Layer
+* Docker Support
+* Parallel Execution
+* Cross-browser Execution
+* Slack Notifications
+* Test Tagging
+* Allure Reporting
+* Retry Strategy
+* Test Data Management
+
+---
+
+# Sample Folder Structure
 
 ```bash
-npx playwright codegen
+tests/
+ ├── auth/
+ └── employee/
+
+pages/
+ ├── login.page.ts
+ ├── dashboard.page.ts
+ └── pim.page.ts
+
+fixtures/
+ └── base.fixture.ts
+
+data/
+ └── users.ts
+
+config/
+ └── env.ts
 ```
 
 ---
 
-## Show trace viewer
+# CI/CD Execution
 
-```bash
-npx playwright show-trace trace.zip
-```
+Automatically runs on:
 
----
+* Push to main/develop
+* Pull Request to main/develop
 
-# Future Improvements
+GitHub Actions uploads:
 
-- Add Employee flow
-- API testing
-- Parallel execution
-- Allure Report
-- Docker support
-- Cross-browser testing
+* HTML Report
+* Trace Files
+* Videos
+* Screenshots
 
 ---
 
 # Author
 
-Playwright Automation Testing POC
+Automation Framework POC for OrangeHRM using Playwright + TypeScript.

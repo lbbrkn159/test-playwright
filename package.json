@@ -1,19 +1,34 @@
 {
   "name": "playwright_test",
   "version": "1.0.0",
-  "description": "",
+  "description": "Automation Testing POC using Playwright + TypeScript with OrangeHRM demo application.",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "test": "playwright test",
+    "test:headed": "playwright test --headed",
+    "test:ui": "playwright test --ui",
+    "report": "playwright show-report reports/html-report"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "commonjs",
   "devDependencies": {
-    "@playwright/test": "^1.58.2",
+    "@playwright/test": "^1.60.0",
     "@types/node": "^25.3.3",
-    "typescript": "^6.0.2"
+    "dotenv": "^17.4.2",
+    "ts-node": "^10.9.2",
+    "typescript": "^6.0.3"
   },
-  "dependencies": {
-    "dotenv": "^17.3.1"
-  }
+  "directories": {
+    "test": "tests"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lbbrkn159/test-playwright.git"
+  },
+  "bugs": {
+    "url": "https://github.com/lbbrkn159/test-playwright/issues"
+  },
+  "homepage": "https://github.com/lbbrkn159/test-playwright#readme"
 }
