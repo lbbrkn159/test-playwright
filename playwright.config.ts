@@ -14,6 +14,11 @@ export default defineConfig({
 
   use: {
     headless: true,
+    launchOptions: {
+      slowMo: 777,
+      args: ['--start-maximized']
+    },
+    viewport: null,
     screenshot: 'only-on-failure',
     video: 'retain-on-failure',
     trace: 'retain-on-failure'

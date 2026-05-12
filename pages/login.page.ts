@@ -1,27 +1,31 @@
-import { expect, Page } from '@playwright/test';
-import { BasePage } from './base.page';
+import { Page } from '@playwright/test';
 
-export class LoginPage extends BasePage {
+export class LoginPage {
 
-  readonly usernameInput;
-  readonly passwordInput;
-  readonly loginButton;
+  usernameInput;
 
-  constructor(page: Page) {
-    super(page);
+  passwordInput;
 
-    this.usernameInput = page.locator('input[name="username"]');
-    this.passwordInput = page.locator('input[name="password"]');
-    this.loginButton = page.locator('button[type="submit"]');
+  loginButton;
+
+  constructor(private page: Page) {
+
+    this.usernameInput = page.getByPlaceholder('Username');
+
+    this.passwordInput = page.getByPlaceholder('Password');
+
+    this.loginButton = page.getByRole('button', {
+      name: 'Login'
+    });
+    
   }
 
   async login(username: string, password: string) {
-    await this.usernameInput.fill(username);
-    await this.passwordInput.fill(password);
-    await this.loginButton.click();
-  }
 
-  async verifyLoginSuccess() {
-    await expect(this.page).toHaveURL(/dashboard/);
+    await this.usernameInput.fill(username);
+
+    await this.passwordInput.fill(password);
+
+    await this.loginButton.click();
   }
 }

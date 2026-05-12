@@ -1,16 +1,16 @@
-import { expect, Page } from '@playwright/test'
-import { BasePage } from './base.page'
+import { Page } from '@playwright/test';
 
-export class DashboardPage extends BasePage {
-  constructor(page: Page) {
-    super(page)
+export class DashboardPage {
+
+  adminMenu;
+
+  constructor(private page: Page) {
+    this.adminMenu = this.page.getByRole('link', {
+      name: 'Admin'
+    });
   }
 
-  dashboardHeader = this.page.getByRole('heading', {
-    name: 'Dashboard',
-  })
-
-  async verifyDashboardDisplayed() {
-    await expect(this.dashboardHeader).toBeVisible()
+  async goToAdminPage() {
+    await this.adminMenu.click();
   }
 }
