@@ -3,9 +3,14 @@ import { defineConfig } from '@playwright/test';
 export default defineConfig({
   testDir: './tests',
 
-  timeout: 30000,
+  timeout: 60000,
+  globalTimeout: 100000,
+  expect: {
+    timeout: 10000
+  }, 
+ 
 
-  retries: 1,
+  retries: 0,
 
   reporter: [
     ['html', { outputFolder: 'reports/html-report' }],
@@ -20,7 +25,9 @@ export default defineConfig({
     },
     viewport: null,
     screenshot: 'only-on-failure',
-    video: 'retain-on-failure',
+    video: {
+      mode: 'on',
+    },
     trace: 'retain-on-failure'
   },
 

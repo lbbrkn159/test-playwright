@@ -40,7 +40,7 @@ test.describe('Admin Search', () => {
       await expect(page)
         .toHaveURL(/admin/);
 
-      await page.waitForTimeout(7777);
+      await page.waitForTimeout(10000);
 
   });
 
